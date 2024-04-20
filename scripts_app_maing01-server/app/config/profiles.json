@@ -1,0 +1,94 @@
+{
+  "{asid}": {
+    "profileList": ["AsidAuthorities","AsidExecutives","AsidLicenseOwner","Public"],
+    "useCaseMap": {}
+  },
+  "*": {
+    "profileList": ["Authorities","Executives","AwidLicenseOwner","Public","Authenticated","AwidInitiator"],
+    "useCaseMap": {
+      "sys/uuAppWorkspace/init": {
+        "sysStateList": ["created","assigned"],
+        "profileList": ["AwidLicenseOwner","AwidInitiator"]
+      },
+      "sys/uuAppWorkspace/load": {
+        "sysStateList": ["active"],
+        "profileList": ["Authenticated"]
+      },
+      "sys/uuAppWorkspace/loadBasicData": {
+        "sysStateList": ["active"],
+        "profileList": ["Public"]
+      },
+      "defaultUve": {
+        "profileList": ["Public"]
+      },
+      "sys/uuAppWorkspace/initUve": {
+        "sysStateList": ["created"],
+        "profileList": ["Public","AwidLicenseOwner"]
+      },
+      "script/create": {
+        "sysStateList": ["active"],
+        "profileList": ["Public"]
+      },
+      "script/update": {
+        "sysStateList": ["active"],
+        "profileList": ["Public"]
+      },
+      "script/delete": {
+        "sysStateList": ["active"],
+        "profileList": ["Public"]
+      },
+      "script/get": {
+        "sysStateList": ["active"],
+        "profileList": ["Public"]
+      },
+      "script/list": {
+        "sysStateList": ["active"],
+        "profileList": ["Public"]
+      },
+      "token/create": {
+        "sysStateList": ["active"],
+        "profileList": ["Public"]
+      },
+      "token/update": {
+        "sysStateList": ["active"],
+        "profileList": ["Public"]
+      },
+      "token/delete": {
+        "sysStateList": ["active"],
+        "profileList": ["Public"]
+      },
+      "token/get": {
+        "sysStateList": ["active"],
+        "profileList": ["Public"]
+      },
+      "token/list": {
+        "sysStateList": ["active"],
+        "profileList": ["Public"]
+      },
+      "script/execute": {
+        "sysStateList": ["active"],
+        "profileList": ["Public"]
+      },
+      "group/create": {
+        "sysStateList": ["active"],
+        "profileList": ["Public"]
+      },
+      "group/get": {
+        "sysStateList": ["active"],
+        "profileList": ["Public"]
+      },
+      "group/list": {
+        "sysStateList": ["active"],
+        "profileList": ["Public"]
+      },
+      "group/update": {
+        "sysStateList": ["active"],
+        "profileList": ["Public"]
+      },
+      "group/remove": {
+        "sysStateList": ["active"],
+        "profileList": ["Public"]
+      }
+    }
+  }
+}

@@ -1,0 +1,111 @@
+{
+  "{vendor}-{uuApp}-{uuSubApp}": {
+    "useCaseMap": {
+      "sys/uuAppWorkspace/init": {
+        "realization": "api/controllers/AppMainController.init",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "sys/uuAppWorkspace/load": {
+        "realization": "api/controllers/AppMainController.load",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
+      "sys/uuAppWorkspace/loadBasicData": {
+        "realization": "api/controllers/AppMainController.loadBasicData",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
+      "defaultUve": {
+        "realization": "index.html",
+        "httpMethod": "GET",
+        "type": "UVE"
+      },
+      "sys/uuAppWorkspace/initUve": {
+        "realization": "index.html",
+        "httpMethod": "GET",
+        "type": "UVE"
+      },
+      "script/create": {
+        "realization": "api/controllers/ScriptMainController.createScript",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "script/update": {
+        "realization": "api/controllers/ScriptMainController.updateScript",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "script/delete": {
+        "realization": "api/controllers/ScriptMainController.deleteScript",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "script/get": {
+        "realization": "api/controllers/ScriptMainController.getScript",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
+      "script/list": {
+        "realization": "api/controllers/ScriptMainController.listScript",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
+      "token/create": {
+        "realization": "api/controllers/TokenController.createToken",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "token/update": {
+        "realization": "api/controllers/TokenController.updateToken",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "token/delete": {
+        "realization": "api/controllers/TokenController.deleteToken",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "token/get": {
+        "realization": "api/controllers/TokenController.getToken",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
+      "token/list": {
+        "realization": "api/controllers/TokenController.listToken",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
+      "script/execute": {
+        "realization": "api/controllers/ScriptMainController.executeScript",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "group/create": {
+        "realization": "api/controllers/GroupController.createGroup",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "group/get": {
+        "realization": "api/controllers/GroupController.getGroup",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
+      "group/list": {
+        "realization": "api/controllers/GroupController.listGroup",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
+      "group/update": {
+        "realization": "api/controllers/GroupController.updateGroup",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "group/remove": {
+        "realization": "api/controllers/GroupController.removeGroup",
+        "httpMethod": "POST",
+        "type": "CMD"
+      }
+    }
+  }
+}
