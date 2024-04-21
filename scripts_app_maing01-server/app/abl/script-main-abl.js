@@ -20,7 +20,7 @@ class ScriptMainAbl {
   }
 
   async executeScript(awid, dtoIn) {
-    let validationResult = this.validator.validate("scriptGetDtoInType", dtoIn);
+    let validationResult = this.validator.validate("scriptGetDtoInType", dtoIn.id);
     let uuAppErrorMap = ValidationHelper.processValidationResult(
       dtoIn,
       validationResult,
@@ -33,11 +33,21 @@ class ScriptMainAbl {
     if (!dtoOut) {
       throw new Errors.Get.ScriptDoesNotExist({ uuAppErrorMap }, { id: dtoIn.id });
     }
-    let s = ""
-await eval("s = 'jupi'")
+
+    let scriptDtoIn = ""
+    for (let i = 0; i < dtoOut.dtoInSchema.length(); i++) {
+      scriptDtoIn += dtoOut.dtoInSchema[i].split(":")[0] + "=" + dtoIn.dtoIn[i] + "\n"
+    }
+    scriptDtoIn += dtoOut.body
+    try {
+      await eval(scriptDtoIn)
+    } catch (e) {
+      return e
+    }
+
+
     return {
       ...dtoOut,
-      s,
       uuAppErrorMap,
     };
   }
