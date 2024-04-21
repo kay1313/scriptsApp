@@ -42,7 +42,7 @@ class ScriptMainAbl {
     try {
       await eval(scriptDtoIn)
     } catch (e) {
-      return e
+      return "Script failed to run: " + e
     }
 
 
