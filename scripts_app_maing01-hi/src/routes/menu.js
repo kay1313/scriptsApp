@@ -1,5 +1,5 @@
 //@@viewOn:imports
-import { createComponent, useState } from "uu5g05";
+import { createComponent, useRoute, useState } from "uu5g05";
 import Uu5Elements from "uu5g05-elements";
 import Config from "./config/config.js";
 import MenuProvider from "../bricks/menu-provider";
@@ -13,6 +13,13 @@ const Css = {
     margin: "5%",
     marginTop: 40,
     width: "90%"
+  }),
+  button: () => Config.Css.css({
+    margin: "5%",
+    width: "90%",
+    backgroundColor: "#8cd48e",
+    color: "white",
+    fontSize: 32
   }),
   dropdownItem: () => Config.Css.css({
     width: "100%",
@@ -43,6 +50,7 @@ const Menu = createComponent({
     //@@viewOn:interface
     //@@viewOff:interface
 
+    const [, setRoute] = useRoute();
     const [mainDropdownValue, setMainDropdownValue] = useState(false);
 
     const mainList = [
@@ -71,6 +79,10 @@ const Menu = createComponent({
           itemList={mainList}
           className={Css.dropdown()}
         />
+        <Uu5Elements.Button
+          className={Css.button()}
+          onClick={() => mainDropdownValue ? setRoute("token") : setRoute("script")} >
+          +</Uu5Elements.Button>
         <div>
           <MenuProvider key={mainDropdownValue ? "tokens" : "scripts"} type={mainDropdownValue} />
         </div>

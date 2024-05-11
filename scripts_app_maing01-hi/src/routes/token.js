@@ -1,6 +1,8 @@
 //@@viewOn:imports
 import { createComponent } from "uu5g05";
 import Config from "./config/config.js";
+import TokenProvider from "../bricks/token-provider";
+import TokenView from "../bricks/token-view";
 //@@viewOff:imports
 
 //@@viewOn:constants
@@ -31,7 +33,7 @@ const Token = createComponent({
     //@@viewOff:interface
 
     //@@viewOn:render
-    return children ?? null;
+    return ( props.params ? <TokenProvider data = {props.params.data}/> : <TokenView data = {""}/>);
     //@@viewOff:render
   },
 });

@@ -27,7 +27,7 @@ class TokenAbl {
       Errors.List.InvalidDtoIn
     );
 
-    const dtoOut = await this.dao.list(awid);
+    const dtoOut = await this.dao.list({ awid: awid });
 
     return {
       ...dtoOut,

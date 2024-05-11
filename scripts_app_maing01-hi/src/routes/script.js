@@ -2,6 +2,7 @@
 import { createComponent } from "uu5g05";
 import Config from "./config/config.js";
 import ScriptProvider from "../bricks/script-provider";
+import ScriptView from "../bricks/script-view";
 //@@viewOff:imports
 
 //@@viewOn:constants
@@ -32,7 +33,7 @@ const Script = createComponent({
     //@@viewOff:interface
 
     //@@viewOn:render
-    return (<ScriptProvider data = {props.params.data}/>);
+    return ( props.params ? <ScriptProvider data = {props.params.data}/> : <ScriptView data = {""} />);
     //@@viewOff:render
   },
 });

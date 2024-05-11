@@ -1,6 +1,9 @@
 //@@viewOn:imports
-import { createComponent } from "uu5g05";
+import { createComponent, useDataObject } from "uu5g05";
 import Config from "./config/config.js";
+import Calls from "../calls";
+import Uu5Elements from "uu5g05-elements";
+import TokenView from "./token-view";
 //@@viewOff:imports
 
 //@@viewOn:constants
@@ -24,15 +27,25 @@ const TokenProvider = createComponent({
 
   render(props) {
     //@@viewOn:private
-    const { children } = props;
-    //@@viewOff:private
+    function loadData() {
+      return Calls.getToken(props.data);
+    }
 
-    //@@viewOn:interface
-    //@@viewOff:interface
+    const callResult = useDataObject({
+      handlerMap: {
+        load: loadData,
+      },
+    });
 
-    //@@viewOn:render
-    return children ?? null;
-    //@@viewOff:render
+    const { state, data, errorData } = callResult;
+    switch (state) {
+      case "pendingNoData":
+      case "pending":
+        return <Uu5Elements.Pending />;
+      case "ready":
+      case "readyNoData":
+        return <TokenView data={data} />;
+    }
   },
 });
 

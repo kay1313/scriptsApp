@@ -29,6 +29,16 @@ const Calls = {
     return Calls.call("get", commandUri, { id: id });
   },
 
+  getToken(id) {
+    const commandUri = Calls.getCommandUri("token/get");
+    return Calls.call("get", commandUri, { id: id });
+  },
+
+  updateToken(id) {
+    const commandUri = Calls.getCommandUri("token/get");
+    return Calls.call("get", commandUri, { id: id });
+  },
+
   listTokens() {
     const commandUri = Calls.getCommandUri("token/list");
     return Calls.call("get", commandUri);
