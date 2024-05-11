@@ -34,9 +34,9 @@ const Calls = {
     return Calls.call("get", commandUri, { id: id });
   },
 
-  updateToken(id) {
-    const commandUri = Calls.getCommandUri("token/get");
-    return Calls.call("get", commandUri, { id: id });
+  updateToken(dtoInData) {
+    const commandUri = Calls.getCommandUri("token/update");
+    return Calls.call("post", commandUri, dtoInData);
   },
 
   listTokens() {
@@ -51,7 +51,7 @@ const Calls = {
 
   createToken(dtoInData) {
     const commandUri = Calls.getCommandUri("token/create");
-    return Calls.call("post", commandUri, { dtoInData });
+    return Calls.call("post", commandUri,  dtoInData);
   },
 
   loadIdentityProfiles() {

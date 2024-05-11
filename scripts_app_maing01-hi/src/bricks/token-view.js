@@ -1,7 +1,8 @@
 //@@viewOn:imports
-import { createVisualComponent, Utils, Content } from "uu5g05";
+import { createVisualComponent, Utils, Content, useState } from "uu5g05";
 import Config from "./config/config.js";
 import Uu5Forms from "uu5g05-forms";
+import Uu5Elements from "uu5g05-elements";
 import Calls from "../calls";
 //@@viewOff:imports
 
@@ -51,19 +52,33 @@ const TokenView = createVisualComponent({
     const { children } = props;
     //@@viewOff:private
 
-    function action(data) {
-      if (props.data.name) {
-        Calls.updateToken(props.data);
-      }
-      else {
-        Calls.createToken(data).then(r => console.log(r));
-      }
-    }
+      const [alertVisible, setAlertVisible] = useState(false);
+      const [errorAlertVisible, setErrorAlertVisible] = useState(false);
 
-    //@@viewOn:interface
-    //@@viewOff:interface
+      const action = async (data) => {
+        data.type = data.type === "dev"
+        data.value = data.value.split("\n")
+          if (props.data.id) {
+            data.id = props.data.id
+            Calls.updateToken(data).then(r =>
+              r.id ? setAlertVisible(true) : setErrorAlertVisible(true
+              ));
+          } else {
+            Calls.createToken(data).then(r =>
+            r.id ? setAlertVisible(true) : setErrorAlertVisible(true
+            ));
+          }
+      };
 
-    //@@viewOn:render
+      const handleAlertClose = () => {
+        setAlertVisible(false);
+      };
+
+      const handleErrorAlertClose = () => {
+      setErrorAlertVisible(false);
+      };
+
+//@@viewOn:render
     const attrs = Utils.VisualComponent.getAttrs(props, Css.main());
     const currentNestingLevel = Utils.NestingLevel.getNestingLevel(props, TokenView);
     return currentNestingLevel ? (
@@ -77,21 +92,20 @@ const TokenView = createVisualComponent({
                 required
                 name="name"
                 label="Name"
-                initialValue= { props.data.name ? props.data.name : "" }
+                initialValue={props.data.name ? props.data.name : ""}
               />
               <Uu5Forms.FormSelect
-                name="groups"
-                label="Groups"
-              />
-              <Uu5Forms.FormSelect
+                required
+                itemList={[{ value: "prod" }, { value: "dev" }]}
+                initialValue={props.data.type ? "dev" : "prod"}
                 name="type"
                 label="Type"
               />
               <Uu5Forms.FormTextArea
                 required
-                name="token"
+                name="value"
                 label="Token"
-                initialValue= { props.data.value ? props.data.value[0] : "" }
+                initialValue={props.data.value ? props.data.value[0] : ""}
               />
               <Uu5Forms.SubmitButton className={Css.button()} colorScheme="primary">
                 {props.data.name ? "Edit" : "Add"}
@@ -99,6 +113,22 @@ const TokenView = createVisualComponent({
             </div>
           </Uu5Forms.Form>
         </div>
+        {alertVisible && (
+          <Uu5Elements.Alert
+            priority="success"
+            message="Success."
+            onClose={handleAlertClose}
+            closeGlyphicon
+          />
+        )}
+        {errorAlertVisible && (
+          <Uu5Elements.Alert
+            priority="error"
+            message="Something went wrong."
+            onClose={handleErrorAlertClose}
+            closeGlyphicon
+          />
+        )}
       </div>
     ) : null;
     //@@viewOff:render
