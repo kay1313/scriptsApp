@@ -125,6 +125,7 @@ const ScriptView = createVisualComponent({
               <Uu5Forms.FormTextArea
                 name="dtoInSchema"
                 label="DtoInSchema"
+                placeholder="values:string"
                 initialValue= { props.data.dtoInSchema ? props.data.dtoInSchema : "" }
               />
               <Uu5Forms.FormTextArea
