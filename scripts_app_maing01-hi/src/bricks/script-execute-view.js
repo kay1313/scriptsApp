@@ -1,7 +1,9 @@
 //@@viewOn:imports
-import { createVisualComponent, Utils, Content, Lsi } from "uu5g05";
+import { createVisualComponent, Utils, Content, Lsi, useState } from "uu5g05";
 import Config from "./config/config.js";
 import Uu5Forms from "uu5g05-forms";
+import Calls from "../calls";
+import Uu5Elements from "uu5g05-elements";
 //@@viewOff:imports
 
 //@@viewOn:constants
@@ -51,13 +53,14 @@ const ScriptExecuteView = createVisualComponent({
     //@@viewOff:private
     //@@viewOn:interface
     //@@viewOff:interface
+    const [alertVisible, setAlertVisible] = useState(false);
 
     function generateItems() {
       if (props.data.dtoInSchema) {
         return [...new Array(props.data.dtoInSchema.length)].map((it, i) => (
         <Uu5Forms.FormText
           required
-          name={props.data.dtoInSchema[i]}
+          name={props.data.dtoInSchema[i].split(":")[0]}
           label={props.data.dtoInSchema[i].split(":")[0]}
         />
         ));
@@ -65,9 +68,26 @@ const ScriptExecuteView = createVisualComponent({
       return "";
     }
 
-    function execute() {
-      console.log("yeeees")
+    function execute(data) {
+      data.id = props.data.id
+      if (Array.isArray(props.data.dtoInSchema)) {
+        data.dtoInSchema = props.data.dtoInSchema.map(dto => {
+          const dtoName = dto.split(":")[0];
+          return dtoName + ":" + data[dtoName];
+        });
+      }
+      console.log(data);
+      return Calls.executeScript(data).then(
+        r => {
+          console.log(r);
+          setAlertVisible(true);
+        }
+      );
     }
+
+    const handleAlertClose = () => {
+      setAlertVisible(false);
+    };
 
     //@@viewOn:render
     const attrs = Utils.VisualComponent.getAttrs(props, Css.main());
@@ -87,6 +107,14 @@ const ScriptExecuteView = createVisualComponent({
             </div>
           </Uu5Forms.Form>
         </div>
+        {alertVisible && (
+          <Uu5Elements.Alert
+            priority="success"
+            message="Success."
+            onClose={handleAlertClose}
+            closeGlyphicon
+          />
+        )}
       </div>
     ) : null;
     //@@viewOff:render

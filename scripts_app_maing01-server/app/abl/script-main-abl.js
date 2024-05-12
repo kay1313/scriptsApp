@@ -20,25 +20,23 @@ class ScriptMainAbl {
   }
 
   async executeScript(awid, dtoIn) {
-    let validationResult = this.validator.validate("scriptGetDtoInType", dtoIn.id);
+    /*let validationResult = this.validator.validate("scriptGetDtoInType", dtoIn.id);
     let uuAppErrorMap = ValidationHelper.processValidationResult(
       dtoIn,
       validationResult,
       WARNINGS.unsupportedKeys.code,
       Errors.Get.InvalidDtoIn
-    );
-
+    );*/
     const dtoOut = await this.dao.get(awid, dtoIn.id);
-
-    if (!dtoOut) {
+    /*if (!dtoOut) {
       throw new Errors.Get.ScriptDoesNotExist({ uuAppErrorMap }, { id: dtoIn.id });
-    }
-
-    let scriptDtoIn = ""
-    for (let i = 0; i < dtoOut.dtoInSchema.length(); i++) {
-      scriptDtoIn += dtoOut.dtoInSchema[i].split(":")[0] + "=" + dtoIn.dtoIn[i] + "\n"
-    }
+    }*/
+    let scriptDtoIn = dtoIn.dtoInSchema.map(item => {
+      const [key, value] = item.split(':');
+      return `let ${key}="${value}";\n`;
+    }).join('');
     scriptDtoIn += dtoOut.body
+
     try {
       await eval(scriptDtoIn)
     } catch (e) {
@@ -48,7 +46,7 @@ class ScriptMainAbl {
 
     return {
       ...dtoOut,
-      uuAppErrorMap,
+     // uuAppErrorMap,
     };
   }
 

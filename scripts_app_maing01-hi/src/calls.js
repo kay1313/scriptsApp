@@ -44,6 +44,11 @@ const Calls = {
     return Calls.call("post", commandUri, dtoInData);
   },
 
+  executeScript(dtoInData) {
+    const commandUri = Calls.getCommandUri("script/execute");
+    return Calls.call("post", commandUri, dtoInData);
+  },
+
   listTokens() {
     const commandUri = Calls.getCommandUri("token/list");
     return Calls.call("get", commandUri);
