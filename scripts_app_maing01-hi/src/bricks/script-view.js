@@ -1,7 +1,9 @@
 //@@viewOn:imports
-import { createVisualComponent, Utils, Content } from "uu5g05";
+import { Content, createVisualComponent, useState, Utils } from "uu5g05";
 import Config from "./config/config.js";
 import Uu5Forms from "uu5g05-forms";
+import Uu5Elements from "uu5g05-elements";
+import Calls from "../calls";
 //@@viewOff:imports
 
 //@@viewOn:constants
@@ -50,14 +52,48 @@ const ScriptView = createVisualComponent({
     const { children } = props;
     //@@viewOff:private
 
-    function generateItems() {
-      if (props.data.dtoInSchema) {
-        return [...new Array(props.data.dtoInSchema.length)].map((it, i) => (
-          <div>{props.data.dtoInSchema[i]}</div>
-        ));
-      }
-      return "";
+    const [alertVisible, setAlertVisible] = useState(false);
+    const [errorAlertVisible, setErrorAlertVisible] = useState(false);
+
+    let tokensInitialValue = []
+
+    if (props.data.tokens) {
+      props.tokenList.itemList.forEach(token => {
+        if (props.data.tokens.includes(token.id)){
+          tokensInitialValue.push(token.name);
+        }
+      });
     }
+
+    const action = async (data) => {
+      if (!data.dtoInSchema)
+        data.dtoInSchema = ""
+      data.dtoInSchema = data.dtoInSchema.split("\n")
+      data.tokens = props.tokenList.itemList.reduce((matchingIds, item) => {
+        if (data.tokens.includes(item.name)) {
+          matchingIds.push(item.id);
+        }
+        return matchingIds;
+      }, [])
+      if (props.data.id) {
+        data.id = props.data.id
+        Calls.updateScript(data).then(r =>
+          r.id ? setAlertVisible(true) : setErrorAlertVisible(true
+          ));
+      } else {
+        Calls.createScript(data).then(r =>
+          r.id ? setAlertVisible(true) : setErrorAlertVisible(true
+          ));
+      }
+    };
+
+    const handleAlertClose = () => {
+      setAlertVisible(false);
+    };
+
+    const handleErrorAlertClose = () => {
+      setErrorAlertVisible(false);
+    };
 
     //@@viewOn:interface
     //@@viewOff:interface
@@ -71,7 +107,7 @@ const ScriptView = createVisualComponent({
         <Content nestingLevel={currentNestingLevel}>{children}</Content>
         <div className={Css.block()}>
           <h1>Script</h1>
-          <Uu5Forms.Form onSubmit={async (e) => execute(e.data.value)}>
+          <Uu5Forms.Form onSubmit={async (e) => action(e.data.value)}>
             <div>
               <Uu5Forms.FormText
                 required
@@ -80,12 +116,11 @@ const ScriptView = createVisualComponent({
                 initialValue= { props.data.name ? props.data.name : "" }
               />
               <Uu5Forms.FormSelect
-                name="groups"
-                label="Groups"
-              />
-              <Uu5Forms.FormSelect
                 name="tokens"
                 label="Tokens"
+                itemList={props.tokenList.itemList.map(item => ({ value: item.name }))}
+                initialValue={tokensInitialValue}
+                multiple={true}
               />
               <Uu5Forms.FormTextArea
                 name="dtoInSchema"
@@ -104,6 +139,22 @@ const ScriptView = createVisualComponent({
             </div>
           </Uu5Forms.Form>
         </div>
+        {alertVisible && (
+          <Uu5Elements.Alert
+            priority="success"
+            message="Success."
+            onClose={handleAlertClose}
+            closeGlyphicon
+          />
+        )}
+        {errorAlertVisible && (
+          <Uu5Elements.Alert
+            priority="error"
+            message="Something went wrong."
+            onClose={handleErrorAlertClose}
+            closeGlyphicon
+          />
+        )}
       </div>
     ) : null;
     //@@viewOff:render

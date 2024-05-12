@@ -39,6 +39,11 @@ const Calls = {
     return Calls.call("post", commandUri, dtoInData);
   },
 
+  updateScript(dtoInData) {
+    const commandUri = Calls.getCommandUri("script/update");
+    return Calls.call("post", commandUri, dtoInData);
+  },
+
   listTokens() {
     const commandUri = Calls.getCommandUri("token/list");
     return Calls.call("get", commandUri);
@@ -46,7 +51,7 @@ const Calls = {
 
   createScript(dtoInData) {
     const commandUri = Calls.getCommandUri("script/create");
-    return Calls.call("post", commandUri, { dtoInData });
+    return Calls.call("post", commandUri, dtoInData);
   },
 
   createToken(dtoInData) {

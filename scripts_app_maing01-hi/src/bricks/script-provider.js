@@ -1,5 +1,5 @@
 //@@viewOn:imports
-import { createComponent, useDataObject } from "uu5g05";
+import { createComponent, useEffect, useState } from "uu5g05";
 import Config from "./config/config.js";
 import Calls from "../calls";
 import Uu5Elements from "uu5g05-elements";
@@ -27,26 +27,47 @@ const ScriptProvider = createComponent({
 
   render(props) {
     //@@viewOn:private
-    // Function to load data based on type
-    function loadData() {
-      return Calls.getScript(props.data);
+
+    const [scriptData, setScriptData] = useState(null);
+    const [tokenData, setTokenData] = useState(null);
+
+    useEffect(() => {
+      async function loadData() {
+        try {
+          const scriptData = await Calls.getScript(props.data);
+          setScriptData(scriptData);
+        } catch (error) {
+          console.error("Error loading script data:", error);
+        }
+      }
+
+      async function loadTokenData() {
+        try {
+          const tokenData = await Calls.listTokens();
+          setTokenData(tokenData);
+        } catch (error) {
+          console.error("Error loading token data:", error);
+        }
+      }
+      if (props.data) {
+        Promise.all([loadData(), loadTokenData()]).catch(error => {
+          console.error("Error loading data:", error);
+        });
+      }
+      else {
+        Promise.all([loadTokenData()]).then(setScriptData("")).catch(error => {
+          console.error("Error loading data:", error);
+        });
+      }
+
+    }, [props.data]);
+
+    if (scriptData === null || tokenData === null) {
+      return <Uu5Elements.Pending/>;
     }
 
-    const callResult = useDataObject({
-      handlerMap: {
-        load: loadData,
-      },
-    });
+    return <ScriptView data={scriptData} tokenList={tokenData}/>;
 
-    const { state, data, errorData } = callResult;
-    switch (state) {
-      case "pendingNoData":
-      case "pending":
-        return <Uu5Elements.Pending />;
-      case "ready":
-      case "readyNoData":
-        return <ScriptView data={data} />;
-    }
   },
 });
 

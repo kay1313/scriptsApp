@@ -31,7 +31,6 @@ const MenuProvider = createComponent({
 
     // Function to load data based on type
     function loadData() {
-      console.log(type)
       if (type === false) {
         return Calls.listScripts();
       } else {
